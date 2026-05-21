@@ -1,18 +1,24 @@
-# Copyright The OpenTelemetry Authors
-# SPDX-License-Identifier: Apache-2.0
+#klg
 
-# extra settings to be merged into OpenTelemetry Collector configuration
-# do not delete this file
+exporters:
+  elasticsearch:
+    endpoint: <ELASTICSEARCH_ENDPOINT>
+    headers:
+      Authorization: "ApiKey token"
 
-## Example configuration for sending data to your own OTLP HTTP backend
-## Note: the spanmetrics exporter must be included in the exporters array
-## if overriding the traces pipeline.
-##
-#  exporters:
-#    otlp_http/example:
-#      endpoint: <your-endpoint-url>
-#
-#  service:
-#    pipelines:
-#      traces:
-#        exporters: [spanmetrics, otlp_http/example]
+  otlphttp/elastic:
+    endpoint: <ELASTICSEARCH_APM_ENDPOINT>
+    headers:
+      Authorization: "ApiKey token"
+
+service:
+  pipelines:
+    logs:
+      receivers: [otlp]
+      exporters: [elasticsearch]
+    metrics: 
+      receivers: [otlp]
+      exporters: [otlp_http/prometheus]
+    traces: 
+      receivers: [otlp]
+      exporters: [otlphttp/elastic]

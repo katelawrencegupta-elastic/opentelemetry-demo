@@ -53,3 +53,9 @@ otlp:
 storage:
   tsdb:
     out_of_order_time_window: 30m
+
+remote_write:
+  - url: "<ELASTICSEARCH_ENDPOINT>/_prometheus/api/v1/write"
+    authorization:
+      type: ApiKey
+      credentials: "token"
